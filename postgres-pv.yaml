@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-hostpath-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/mnt/data/postgres-storage"
+  NnodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - mstchExpressioons:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - linux-7.255.100.100
