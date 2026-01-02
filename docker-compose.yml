@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:16-trixie
+    restart: always
+    ports:
+      -"5432:5432"
+    environment:
+      POSTGRES_USER: flask_user
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: flask_crud_db
+    volumes:
+      - postgres_data:/var/lib/postresql/data/
+      - ./database_setup.sql:/docker-entrypoint-initdb.d/database_setup.sql
+    
+  web:
+    image: yourdockername/flaskcrudapp:1
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: $(DATABASE_URL)
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
